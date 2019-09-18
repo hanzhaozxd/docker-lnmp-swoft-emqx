@@ -13,6 +13,7 @@
 5. cd ../ && docker-compose exec php php /usr/share/nginx/html/swoft.localhost/bin/swoft http:start -d # 启动swoft HTTP服务，此步骤后续找一个自动执行的方案，此步骤耗时在1分半，也需要优化一下。
 6. 修改host文件 添加 127.0.0.1 swoft.localhost
 7. git update-index --assume-unchanged redis/redis.log # 忽略日志
+8. git update-index --assume-unchanged nginx/log/error.log # 忽略日志
 
 
 ### 服务正常性检查
