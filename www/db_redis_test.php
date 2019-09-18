@@ -1,13 +1,13 @@
 <?php
 
 try{
-	$con =new PDO("mysql:host=mysql;dbname=test","root","123456");
+	$con =new PDO("mysql:host=mysql;dbname=mysql","root","123456");
  	echo "MySQL connection is ok...";
 }catch(PDOException $e){
   	echo $e->getMessage();
 }
 
-echo PHP_EOL;
+echo "<br>";
 
 $redis = new Redis();
 $redis->connect('redis',6379);
