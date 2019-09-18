@@ -20,7 +20,7 @@ class MqttSubscriberCommand
      * @CommandMapping(alias="sub")
      * @param Input $input
      * @CommandOption(
-     *     "server", short="s", type="string", default="emqx",
+     *     "server", short="s", type="string", default="127.0.0.1",
      *     desc="服务器地址"
      * )
      * @CommandOption(
@@ -54,7 +54,7 @@ class MqttSubscriberCommand
         $topic = $input -> getOpt('topic');
 
         // 获取服务器相关的信息
-        $server = $input -> getOpt('server', 'emqx');
+        $server = $input -> getOpt('server', '127.0.0.1');
         $port = $input -> getOpt('port', 1883);
         $username = $input -> getOpt('username', "");
         $password = $input -> getOpt('password', "");
