@@ -11,9 +11,10 @@
 3. docker-compose up # 启动容器组，第一次耗时较久，根据网速大概需要10分钟至半小时左右。第一次建议不加-d 观察启动是否正常 
 4. cd www/swoft.localhost && composer install #安装 swoft vendor依赖
 5. cd ../ && docker-compose exec php php /usr/share/nginx/html/swoft.localhost/bin/swoft http:start -d # 启动swoft HTTP服务，此步骤后续找一个自动执行的方案，此步骤耗时在1分半，也需要优化一下。
-6. 修改host文件 添加 127.0.0.1 swoft.localhost
-7. git update-index --assume-unchanged redis/redis.log # 忽略日志
-8. git update-index --assume-unchanged nginx/log/error.log # 忽略日志
+6. cp .env.example .env # 生成.env文件
+7. 修改host文件 添加 127.0.0.1 swoft.localhost
+8. git update-index --assume-unchanged redis/redis.log # 忽略日志
+9. git update-index --assume-unchanged nginx/log/error.log # 忽略日志
 
 
 ### 服务正常性检查
