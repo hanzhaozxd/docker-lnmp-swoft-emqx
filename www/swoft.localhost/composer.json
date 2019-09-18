@@ -45,7 +45,8 @@
       "App\\": "app/"
     },
     "files": [
-      "app/Helper/Functions.php"
+      "app/Helper/Functions.php",
+      "app/Helper/PhpMqtt.php"
     ]
   },
   "autoload-dev": {
