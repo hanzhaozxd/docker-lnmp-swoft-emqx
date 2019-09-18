@@ -1,0 +1,1 @@
+FROM emqx/emqx:v3.1.0
