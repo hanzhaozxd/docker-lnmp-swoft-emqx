@@ -25,5 +25,20 @@
 
 ---------
 
+### 运行截图
+
 ![n7Y75j.jpg](https://s2.ax1x.com/2019/09/18/n7Y75j.jpg)
 ![n7YoVg.png](https://s2.ax1x.com/2019/09/18/n7YoVg.png)
+
+---------
+
+### 代码变更后快速重启Swoft
+```shell script
+vim ~/.zshrc
+加入如下命令
+function docker_swoft_restart() {
+    z docker-lnmp;
+    docker-compose exec php php /usr/share/nginx/html/swoft.localhost/bin/swoft http:restart -d
+}
+后续执行 docker_swoft_restart 即可快速重启Swoft
+```
