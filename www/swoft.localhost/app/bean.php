@@ -19,11 +19,6 @@ use Swoft\Db\Database;
 use Swoft\Redis\RedisDb;
 
 return [
-    'logger'            => [
-        'flushRequest' => false,
-        'enable'       => false,
-        'json'         => false,
-    ],
     'httpServer'        => [
         'class'    => HttpServer::class,
         'port'     => 18306,
@@ -160,7 +155,7 @@ return [
     ],
     'logger'             => [
         'flushRequest' => false,
-        'enable'       => false,
+        'enable'       => true,
         'handlers'     => [
             'application' => \bean('applicationHandler'),
             'notice'      => \bean('noticeHandler'),
