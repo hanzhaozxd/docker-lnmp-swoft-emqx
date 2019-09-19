@@ -2,15 +2,18 @@
 
 namespace App\Http\Controller;
 
+use App\Model\Entity\Users;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\ValidationData;
 use Swoft\Context\Context;
 use Swoft\Http\Message\ContentType;
+use Swoft\Http\Message\Request;
 use Swoft\Http\Message\Response;
 use Swoft\Http\Server\Annotation\Mapping\Controller;
 use Swoft\Http\Server\Annotation\Mapping\RequestMapping;
-use Throwable;
+use Swoft\Stdlib\Helper\ArrayHelper;
+use Swoft\Validator\Exception\ValidatorException;
 
 /**
  * Class JwtAuthController
@@ -21,38 +24,57 @@ class JwtAuthController
     /**
      * @RequestMapping(route="login")
      *
-     * @throws Throwable
+     * @param Request $request
+     * @return Response
+     * @throws \ReflectionException
+     * @throws \Swoft\Bean\Exception\ContainerException
      */
-    public function login(): Response
+    public function login(Request $request): Response
     {
-        // 获取请求参数
-        $request = Context::mustGet()->getRequest();
+        // 获取所有参数
+        $params = $request -> get();
 
-        $username = $request -> get('username');
-        $password = $request -> get('password');
-
-        // 预定义的账号密码 TODO 数据库
-        if($username !== 'hanzhao' || $password !== 'password'){
-            $content = make_json_response_content(-1, '账号或密码错误', []);
-        }else{
-            // 生成token
-            $time = time();
-            $token = (new Builder()) -> issuedBy('swoft.localhost')
-                -> permittedFor('swoft.localhost')
-                -> identifiedBy('ThisIsKeyValue')
-                -> issuedAt($time)
-                -> canOnlyBeUsedAfter($time)
-                -> expiresAt($time + 3600)
-                -> withClaim('uid', rand(1, 1000))
-                -> getToken();
-
-            // 将token返回
-            $content = make_json_response_content(1, '登录成功', [
-                'token' => $token -> __toString(),
-            ]);
+        // 数据校验
+        try{
+            $params['name'] = ArrayHelper::getValue($params, 'username');
+            \validate($params, 'UsersLoginValidator');
+        }catch (ValidatorException $e){
+            // 参数错误
+            $content = make_json_response_content(-1, $e->getMessage(), []);
+            return json_response($content);
         }
 
-        return Context::mustGet()->getResponse()->withContentType(ContentType::JSON)->withContent($content);
+        try{
+            $user = Users::where('name', $params['name'])
+                -> first();
+            if(
+                is_null($user) ||
+                !hash_equals($user->getPassword(), md5($params['password']))
+            ){
+                throw new \InvalidArgumentException("抱歉，您输入的账号或密码错误");
+            }
+        }catch (\Exception $e){
+            $content = make_json_response_content(-1, $e->getMessage(), []);
+            return json_response($content);
+        }
+
+        // 生成token
+        $time = time();
+        $token = (new Builder()) -> issuedBy('swoft.localhost')
+            -> permittedFor('swoft.localhost')
+            -> identifiedBy('ThisIsKeyValue')
+            -> issuedAt($time)
+            -> canOnlyBeUsedAfter($time)
+            -> expiresAt($time + 3600)
+            -> withClaim('uid', $user->getId())
+            -> getToken();
+
+        // 将token返回
+        $content = make_json_response_content(1, '登录成功', [
+            'token' => $token -> __toString(),
+        ]);
+
+        return json_response($content);
     }
 
     /**

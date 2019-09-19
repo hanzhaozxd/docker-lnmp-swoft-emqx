@@ -1,4 +1,9 @@
 <?php
+
+use Swoft\Context\Context;
+use Swoft\Http\Message\ContentType;
+use Swoft\Http\Message\Response;
+
 /**
  * Custom global functions
  */
@@ -23,4 +28,17 @@ function make_json_response_content(int $code, string $message='', array $data) 
         'message' => $message,
         'data' => $data
     ]);
+}
+
+/**
+ * http返回json
+ *
+ * @param string $content
+ * @return Response
+ * @throws ReflectionException
+ * @throws \Swoft\Bean\Exception\ContainerException
+ */
+function json_response(string $content) : Response
+{
+    return Context::mustGet()->getResponse()->withContentType(ContentType::JSON)->withContent($content);
 }
