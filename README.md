@@ -15,7 +15,7 @@
 7. 修改host文件 添加 127.0.0.1 swoft.localhost
 8. git update-index --assume-unchanged redis/redis.log # 忽略日志
 9. git update-index --assume-unchanged nginx/log/error.log # 忽略日志
-
+10. docker-compose exec php php /usr/share/nginx/html/swoft.localhost/bin/swoft migrate:up # 执行数据库迁移
 
 ### 服务正常性检查
 1. localhost/phpinfo.php # phpinfo
@@ -41,4 +41,11 @@ function docker_swoft_restart() {
     docker-compose exec php php /usr/share/nginx/html/swoft.localhost/bin/swoft http:restart -d
 }
 后续执行 docker_swoft_restart 即可快速重启Swoft
+这个步骤平均耗时1分钟，一定是有问题的，推测可能是Docker for Mac磁盘性能低的问题。
 ```
+
+------- 
+
+### 实现的接口
+
+[API](https://github.com/hanzhaozxd/docker-lnmp-swoft-emqx/blob/master/API.md)
