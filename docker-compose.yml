@@ -75,6 +75,8 @@ services:
       - extnetwork
     restart: always
     container_name: emqx
+    environment:
+      EMQX_NAME: "Test-Emqx-001"
 
 networks:
   extnetwork:
