@@ -37,5 +37,3 @@ RUN cd ~ \
     && docker-php-ext-install pdo_mysql mysqli pcntl gd\
 
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
-
-RUN php /usr/share/nginx/html/swoft.localhost/bin/swoft http:start -d
